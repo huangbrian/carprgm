@@ -11,10 +11,16 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
   boolean d = false;
   boolean l = false;
   Timer t;
+
+  TrafficCone[] mCones;
+
   public Hl()
   {
     addMouseListener(this);
     addKeyListener(this);
+    mCones = new TrafficCone[2];
+    mCones[0] = new TrafficCone(100,100);
+    mCones[1] = new TrafficCone(300,150);
   //  ActionListener al = new ActionListener();
     t = new Timer(10,new TimerActionListener());
     t.addActionListener(this);
@@ -29,6 +35,10 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
     g.fillOval(x+45,y+15,5,5);
     g.setColor(Color.BLACK);
     g.fillRect(1000,0,20,1000);
+
+    for (TrafficCone t : mCones){
+      t.draw(g);
+    }
   }
 //  public void walls(Graphics g)
 //  {
