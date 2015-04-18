@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Hl extends JPanel implements MouseListener, KeyListener, ActionListener
 {
@@ -11,16 +12,16 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
   boolean d = false;
   boolean l = false;
   Timer t;
-
-  TrafficCone[] mCones;
-
+  ArrayList<TrafficCone> mCones;
+  
   public Hl()
   {
     addMouseListener(this);
     addKeyListener(this);
-    mCones = new TrafficCone[2];
-    mCones[0] = new TrafficCone(100,100);
-    mCones[1] = new TrafficCone(300,150);
+    mCones = new ArrayList<TrafficCone>(3);
+    mCones.add(new TrafficCone(100,100));
+    mCones.add(new TrafficCone(300,150));
+    mCones.add(new TrafficCone(250,300));
   //  ActionListener al = new ActionListener();
     t = new Timer(10,new TimerActionListener());
     t.addActionListener(this);
@@ -53,6 +54,12 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
       y-=2;
     else if(d)
       y+=2;
+    for(TrafficCone c: mCones){
+      if (c.didHit(x,y,x+50,y+15))
+      {
+        c.knockOver();
+      }
+    }
     repaint();
   }
   public void keyPressed(KeyEvent kvt)
@@ -81,6 +88,11 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
     {
       l = true;
       t.start();
+      repaint();
+    }
+    if(kvt.getKeyChar()=='n')
+    {
+      mCones.add(new TrafficCone((int)(Math.random()*500+50),(int)(Math.random()*500+50)));
       repaint();
     }
   }
