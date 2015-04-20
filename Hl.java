@@ -11,8 +11,10 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
   boolean u = false;
   boolean d = false;
   boolean l = false;
+  boolean wallHit = false;
   Timer t;
   ArrayList<TrafficCone> mCones;
+  ArrayList<Walls> blocks;
   
   public Hl()
   {
@@ -22,7 +24,11 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
     mCones.add(new TrafficCone(100,100));
     mCones.add(new TrafficCone(300,150));
     mCones.add(new TrafficCone(250,300));
-  //  ActionListener al = new ActionListener();
+    blocks = new ArrayList<Walls>(4);
+    blocks.add(new Walls(400,100));
+    blocks.add(new Walls(400,150));
+    blocks.add(new Walls(400,250));
+    blocks.add(new Walls(350,50));
     t = new Timer(10,new TimerActionListener());
     t.addActionListener(this);
   }
@@ -40,12 +46,72 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
     for (TrafficCone t : mCones){
       t.draw(g);
     }
+    
+    for (Walls w : blocks){
+      w.paint(g);
+    }
   }
-//  public void walls(Graphics g)
-//  {
-//  }
   public void actionPerformed(ActionEvent avt)
   {
+//    for(Walls w: blocks)
+//    {
+//      if(w.hitWall(x,y,x+50,y+15))
+//      {
+//        wallHit = true;
+//        break;
+//      }
+//    }
+//    int yProx = y;
+//    int xProx = x;
+//    if(wallHit)
+//    {
+//      for(Walls w: blocks)
+//      {
+//        for(int yChange = -3; yChange<=6; yChange+=9)
+//        {
+//          yProx+=yChange;
+//          if(!w.hitWall(xProx,yProx,xProx+50,yProx+15))
+//          {
+////            wallHit = false;
+//            break;
+//          }
+//          for(int xChange = -3; xChange<=6; xChange+=9)
+//          {
+//            xProx+=xChange;
+//            if(!w.hitWall(xProx,yProx,xProx+50,yProx+15))
+//            {
+////              wallHit = false;
+//              break;
+//            }
+//          }
+//          if(!wallHit)
+//          {
+//            break;
+//          }
+//        }
+//        if(!wallHit)
+//        {
+//          break;
+//        }
+//      }
+//    }
+//    x=xProx;
+//    y=yProx;
+//    if(!wallHit)
+//    {
+    
+    for(Walls w: blocks)
+    {
+      w.wallHit(x,y,x+50,y+20);
+      if(w.hit)
+      {
+        if(r||l)
+          x = w.wallHit(x,y,x+50,y+20);
+        if(u||d)
+          y = w.wallHit(x,y,x+50,y+20);
+      }
+    }
+    
     if(r&&x<950)
       x+=2;
     else if(l)
@@ -54,6 +120,7 @@ public class Hl extends JPanel implements MouseListener, KeyListener, ActionList
       y-=2;
     else if(d)
       y+=2;
+//    }
     for(TrafficCone c: mCones){
       if (c.didHit(x,y,x+50,y+15))
       {
