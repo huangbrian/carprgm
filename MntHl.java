@@ -9,5 +9,7 @@ public class MntHl extends JApplet
   {
     Hl h = new Hl();
     setContentPane(h);
+    //MyPanel p = new MyPanel();
   }
+  
 }
